@@ -25,9 +25,12 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"math/rand"
+	"os"
 	"time"
 
 	"google.golang.org/grpc"
@@ -53,6 +56,18 @@ func printFeature(client pb.RouteGuideClient, point *pb.Point) {
 		log.Fatalf("%v.GetFeatures(_) = _, %v: ", client, err)
 	}
 	log.Println(feature)
+}
+
+func machineType(mtype *string) {
+	jsonFile, err := os.Open("user.json")
+	// 最好要处理以下错误
+	if err != nil {
+		fmt.Println(err)
+	}
+	// 要记得关闭
+	defer jsonFile.Close()
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	fmt.Println(string(byteValue))
 }
 
 // printFeatures lists all the features within the given bounding Rectangle.
@@ -177,7 +192,10 @@ func main() {
 	client := pb.NewRouteGuideClient(conn)
 
 	// Looking for a valid feature
-	printFeature(client, &pb.Point{Latitude: 409146138, Longitude: -746188906})
+	printFeature(client, &pb.Point{Latitude: 1, Longitude: 1})
+	printFeature(client, &pb.Point{Latitude: 2, Longitude: 2})
+
+	printFeature(client, &pb.Point{Latitude: 2, Longitude: 2})
 	// printFeature(client, &pb.Point{Latitude: 9999, Longitude: -8888})
 	// // Feature missing.
 	// printFeature(client, &pb.Point{Latitude: 0, Longitude: 0})
