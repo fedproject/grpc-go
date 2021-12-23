@@ -33,7 +33,9 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/examples/data"
-	pb "google.golang.org/grpc/examples/p4p/p4p/sim"
+
+	"google.golang.org/grpc/examples/route_guide/routeguide"
+	pb "google.golang.org/grpc/examples/route_guide/routeguide"
 )
 
 var (
@@ -43,16 +45,16 @@ var (
 	serverHostOverride = flag.String("server_host_override", "x.test.example.com", "The server name used to verify the hostname returned by the TLS handshake")
 )
 
-func printMachineType(client pb.RouteGuideClient, idstring *p4p.Idstring) {
+func printMachineType(client pb.RouteGuideClient, idstring *routeguide.Idstring) {
 	log.Printf("Getting printMachineType for idstring (%d, %d)", idstring)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	feature, err := client.GetFeatureByIDString(ctx, idstring)
+	_, err := client.GetFeatureByIDString(ctx, idstring)
 	if err != nil {
 		log.Fatalf("%v.GetFeatureByIDString(_) = _, %v: ", client, err)
 	}
 	log.Println("printMachineType")
-	log.Println(feature.GetIdstring())
+	// log.Println(feature.GetIdstring())
 }
 
 // printFeature gets the feature for the given point.
@@ -190,7 +192,7 @@ func main() {
 	client := pb.NewRouteGuideClient(conn)
 
 	// Looking for a valid feature
-	printMachineType(client, &p4p.Idstring{Idstring: "N0"})
+	printMachineType(client, &routeguide.Idstring{Idstring: "N0"})
 	// printFeature(client, &pb.Point{Latitude: 409146138, Longitude: -746188906})
 	// printFeature(client, &pb.Point{Latitude: 9999, Longitude: -8888})
 	// // Feature missing.
