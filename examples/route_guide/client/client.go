@@ -20,7 +20,7 @@
 // to perform unary, client streaming, server streaming and full duplex RPCs.
 //
 // It interacts with the route guide service whose definition can be found in routeguide/route_guide.proto.
-package main
+package route_guide.lient
 
 import (
 	"context"
@@ -217,7 +217,7 @@ func randomPoint(r *rand.Rand) *pb.Point {
 	return &pb.Point{Latitude: lat, Longitude: long}
 }
 
-func main() {
+func main_c(x string) {
 	flag.Parse()
 	var opts []grpc.DialOption
 	if *tls {
@@ -241,7 +241,7 @@ func main() {
 	client := pb.NewRouteGuideClient(conn)
 
 	// Looking for a valid feature
-	machineType("sfdsa")
+	printWrap(x)
 	// printFeature(client, &pb.Point{Latitude: 1, Longitude: 1})
 	// printFeature(client, &pb.Point{Latitude: 2, Longitude: 2})
 
